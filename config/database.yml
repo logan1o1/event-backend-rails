@@ -23,7 +23,7 @@ default: &default
 development:
   <<: *default
   database: event_backend_development
-
+  url: <%= ENV["DATABASE_URL"] %>
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
@@ -57,6 +57,7 @@ development:
 test:
   <<: *default
   database: event_backend_test
+  url: <%= ENV["DATABASE_URL"] %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -82,4 +83,4 @@ production:
   <<: *default
   database: event_backend_production
   username: event_backend
-  password: <%= ENV["EVENT_BACKEND_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
