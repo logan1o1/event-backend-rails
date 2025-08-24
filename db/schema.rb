@@ -10,16 +10,74 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_23_184220) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_24_161306) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "admins", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "date"
+    t.string "location"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "poster_url"
+    t.bigint "category_id", null: false
+    t.index ["category_id"], name: "index_events_on_category_id"
+  end
+
+  create_table "jwt_denylists", force: :cascade do |t|
+    t.string "jti"
+    t.datetime "exp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exp"], name: "index_jwt_denylists_on_exp"
+    t.index ["jti"], name: "index_jwt_denylists_on_jti"
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_participants_on_event_id"
+    t.index ["user_id"], name: "index_participants_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "username"
-    t.string "role"
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "events", "categories"
+  add_foreign_key "events", "users"
+  add_foreign_key "participants", "events"
+  add_foreign_key "participants", "users"
 end

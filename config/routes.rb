@@ -1,9 +1,25 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get "users/index"
+    get "users/show"
+    get "users/update"
+    get "users/destroy"
+    get "events/index"
+    get "events/show"
+    get "events/update"
+    get "events/destroy"
+    get "dashboard/index"
+  end
+  devise_for :admins
+  resources :categories
+  resources :participants
+  devise_for :users
   resources :users, only: [:create, :show, :update, :destroy]
   resources :events
   post '/login', to: 'sessions#create'
   post '/register', to: 'users#create'
   delete '/logout' , to: 'sessions#destroy'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
