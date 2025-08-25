@@ -10,7 +10,7 @@ class EventsController < ApplicationController
 
   # GET /events/1 or /events/1.json
   def show
-    render json: @event, include: [:user, :category, :attendees]
+    render json: @event, include: [:user, :category]
   end
 
   # GET /events/new

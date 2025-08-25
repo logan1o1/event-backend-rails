@@ -312,21 +312,15 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
   config.jwt do |jwt|
     jwt.secret = ENV['JWT_SECRET']
-    # If you want to use a different secret, you can configure it here,
-    # but using the application's secret_key_base is a good default.
-    # jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
 
-    # Configure which requests should dispatch a token.
     jwt.dispatch_requests = [
-      ['POST', %r{^/users/sign_in$}]
+      ['POST', %r{^/admins/sign_in$}]
     ]
 
-    # Configure which requests should trigger revocation.
     jwt.revocation_requests = [
-      ['DELETE', %r{^/users/sign_out$}]
+      ['DELETE', %r{^/admins/sign_out$}]
     ]
 
-    # Set the token expiration time.
     jwt.expiration_time = 1.day.to_i
   end
 end

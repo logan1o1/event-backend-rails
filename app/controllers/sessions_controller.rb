@@ -5,8 +5,14 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email])
     
     if user&.authenticate(params[:password])
+      payload = {
+        user_id: user.id,
+        exp: 24.hours.from_now.to_i, 
+        jti: SecureRandom.uuid         
+      }
+
       token = JWT.encode(
-        { user_id: user.id }, 
+        payload, 
         Rails.application.credentials.secret_key_base, 
         'HS256'
       )
@@ -22,6 +28,22 @@ class SessionsController < ApplicationController
   end
   
   def destroy
-    render json: { message: 'Logged out successfully' }, status: :ok
+    token = request.headers['Authorization']&.split(' ')&.last
+
+    if token.nil?
+      return render json: { error: 'Authorization token not provided' }, status: :unauthorized
+    end
+
+    begin
+      decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
+      payload = decoded_token.first
+      
+      JwtDenylist.create!(jti: payload['jti'], exp: Time.at(payload['exp']))
+      
+      render json: { message: 'Logged out successfully' }, status: :ok
+
+    rescue JWT::DecodeError => e
+      render json: { error: "Invalid token: #{e.message}" }, status: :unauthorized
+    end
   end
 end
