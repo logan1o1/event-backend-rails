@@ -1,15 +1,19 @@
 class Event < ApplicationRecord
   belongs_to :user
+  belongs_to :category
 
   validates :title, presence: true, length: { minimum: 3, maximum: 100}
   validates :description, presence: true, length: {minimum: 10, maximum: 1000}
   validates :date, presence: true
   validates :location, presence: true, length: { minimum: 3, maximum: 200}
+  validates :poster_url, presence: true, format: { with: URI::regexp, message: "must be a valid URL" }
+  validates :category, presence: true
+  validates :user, presence: true
 
   validate :date_cannot_be_in_the_past
   validate :date_cannot_be_too_far_in_future
 
-  validates :user, presence: true
+  has_many :participants, dependent: :destroy
 
   private
 

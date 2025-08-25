@@ -1,13 +1,32 @@
-class Admin::EventsController < ApplicationController
+class Admin::EventsController < Admin::AdminController
   def index
+    @events = Event.all  
+    render json: { events: @events }, status: :ok
   end
 
   def show
+    @event = Event.find(params[:id])
+    render json: { event: @event }, status: :ok
   end
 
   def update
+    @event = Event.find(params[:id])  
+    if @event.update(event_params)
+      render json: { message: "Event updated successfully", event: @event }
+    else
+      render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    @event = Event.find(params[:id])  
+    @event.destroy
+    render json: { message: "Event deleted successfully" }
+  end
+
+  private
+
+  def event_params
+    params.require(:event).permit(:title, :description, :date, :location)
   end
 end
