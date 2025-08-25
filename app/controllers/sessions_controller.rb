@@ -16,10 +16,16 @@ class SessionsController < ApplicationController
         Rails.application.credentials.secret_key_base, 
         'HS256'
       )
+
+      safe_user_data = {
+      id: user.id,
+      email: user.email,
+      username: user.username
+    }
       
       render json: { 
         message: 'Login successful', 
-        user: user, 
+        user: safe_user_data, 
         token: token 
       }, status: :ok
     else

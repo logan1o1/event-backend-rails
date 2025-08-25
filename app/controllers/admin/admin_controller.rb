@@ -1,4 +1,6 @@
 class Admin::AdminController < ApplicationController
+  skip_before_action :authenticate_user!
+
   before_action :authenticate_admin!
   # before_action :require_admin_role!
     

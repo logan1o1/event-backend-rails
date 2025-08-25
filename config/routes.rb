@@ -16,10 +16,17 @@ Rails.application.routes.draw do
   resources :participants, only: [:destroy]
 
   namespace :admin do
+    # get "participants/index"
+    # get "participants/create"
+    # get "participants/update"
+    # get "participants/destroy"
     get '/dashboard', to: 'dashboard#index'
-    resources :events, only: [:index, :show, :update, :destroy]
+    resources :events, only: [:index, :show, :update, :destroy] do
+      resources :participants, only: [:index]
+    end
     resources :users, only: [:index, :show, :update, :destroy]
     resources :categories, only: [:index, :create, :update, :destroy]
+    resources :participants, only: [:destroy]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
