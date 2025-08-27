@@ -5,7 +5,20 @@ class EventsController < ApplicationController
   # GET /events or /events.json
   def index
     @events = Event.all.includes(:user, :category) 
-    render json: @events, include: [:user, :category]
+
+    if params[:query].present?
+      search_term = "%#{params[:query]}%"
+      @events = @events.joins(:category).where(
+        "events.title ILIKE ? OR categories.name ILIKE ?",
+        search_term,
+        search_term
+      )
+    end
+
+    render json: @events, include: {
+      user: { only: [:id, :username] }, 
+      category: { only: [:id, :name] }                    
+    }, status: :ok
   end
 
   # GET /events/1 or /events/1.json

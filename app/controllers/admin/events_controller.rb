@@ -1,7 +1,20 @@
 class Admin::EventsController < Admin::AdminController
   def index
     @events = Event.all.includes(:user, :category)
-    render json: { events: @events }, status: :ok
+
+    if params[:query].present?
+      search_term = "%#{params[:query]}%"
+      @events = @events.joins(:category).where(
+        "events.title ILIKE ? OR categories.name ILIKE ?",
+        search_term,
+        search_term
+      )
+    end
+
+    render json: { events: @events }, include: {
+      user: { only: [:id, :username] }, 
+      category: { only: [:id, :name] }                    
+    }, status: :ok
   end
 
   def show

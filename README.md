@@ -20,6 +20,7 @@ Use the endpoints in frontend as mentioned below, I'll add the value of api late
 |***### Events| Method | URL | Purpose || :--- | :--- | :--- 
 
 || `GET` | `api/events` | Get a list of all events.
+|| `GET` | `api/events?query=:category` | Get a list of all events that match the given category.
 || `GET` | `api/events/:id` | Get details for a single event. 
 || `POST` | `api/events` | Create a new event (requires auth). 
 || `PATCH`/`PUT`| `api/events/:id` | Update an event you created (requires auth).
