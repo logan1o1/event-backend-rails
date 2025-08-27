@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   post '/register', to: 'users#create'
   delete '/logout' , to: 'sessions#destroy'
 
-  resources :categories, only: [:index, :show]
+  resources :categories, only: [:index, :show, :create]
   resources :users, only: [:index, :create, :show, :update, :destroy]
 
   resources :events do

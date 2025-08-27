@@ -1,4 +1,6 @@
 class Admin::CategoriesController < Admin::AdminController
+  before_action :set_category, only: [:update, :destroy]
+
   def index
     @categories = Category.all
     render json: @categories
