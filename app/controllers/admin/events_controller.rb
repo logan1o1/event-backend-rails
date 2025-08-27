@@ -1,6 +1,6 @@
 class Admin::EventsController < Admin::AdminController
   def index
-    @events = Event.all  
+    @events = Event.all.includes(:user, :category)
     render json: { events: @events }, status: :ok
   end
 

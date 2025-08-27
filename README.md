@@ -1,24 +1,43 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+These are the endpoints that'll be consumed by the frontend, 
 
-Things you may want to cover:
+api = http://127.0.0.1:3000
 
-* Ruby version
+Use the endpoints in frontend as mentioned below, I'll add the value of api later
 
-* System dependencies
+****### User Authentication| Method | URL | Purpose || :--- | :--- | :--- 
 
-* Configuration
+|| `POST` | `api/register` | Create a new user account. 
+|| `POST` | `api/login` | Log in a user and get a JWT. 
+|| `DELETE`| `api/logout` | Log out a user and invalidate their JWT. 
 
-* Database creation
+|***### Categories| Method | URL | Purpose || :--- | :--- | :--- 
 
-* Database initialization
+|| `GET` | `api/categories` | Get a list of all categories.
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+|***### Events| Method | URL | Purpose || :--- | :--- | :--- 
 
-* Deployment instructions
+|| `GET` | `api/events` | Get a list of all events.
+|| `GET` | `api/events/:id` | Get details for a single event. 
+|| `POST` | `api/events` | Create a new event (requires auth). 
+|| `PATCH`/`PUT`| `api/events/:id` | Update an event you created (requires auth).
+|| `DELETE`| `api/events/:id` | Delete an event you created (requires auth). 
 
-* ...
+|***### Event Participants| Method | URL | Purpose || :--- | :--- | :--- 
+
+|| `GET` | `api/events/:event_id/participants` | Get a list of all participants for a specific event. 
+|| `POST` | `api/events/:event_id/participants` | Join an event (requires auth). 
+|| `DELETE`| `api/participants/:id` | Leave an event (requires auth). 
+
+|***### Admin PanelAll these routes require an admin to be authenticated via the admin login 
+`POST /admins/sign_in`, and logout via `DELETE /admins/sign_out` .| Method | URL | Purpose || :--- | :--- | :--- 
+
+|| `GET` | `api/admin/dashboard` | View admin dashboard stats. 
+|| `GET` | `api/admin/events` | View all events as an admin. 
+|| `DELETE`| `api/admin/events/:id` | Delete any event as an admin. 
+|| `GET` | `api/admin/categories`| View all categories as an admin. 
+|| `POST` | `api/admin/categories`| Create a new category as an admin. |
+||`DELETE` | `api/admin/participants/:id`| Remove a participant from an event
+||`GET` | `api/admin/events/:id/participants`| Get participants for a specific event as admin

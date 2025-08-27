@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
   # before_action :set_user, only: %i[ show edit update destroy ]
-  skip_before_action :authenticate_user!, only: [:create]
+  skip_before_action :authenticate_user!, only: [:index, :create]
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users = User.all.select(:id, :username)
+    render json: @users, status: :ok
   end
 
   # GET /users/1 or /users/1.json

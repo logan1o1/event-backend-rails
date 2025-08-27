@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   post '/register', to: 'users#create'
   delete '/logout' , to: 'sessions#destroy'
 
-  resources :categories
-  resources :users, only: [:create, :show, :update, :destroy]
+  resources :categories, only: [:index, :show]
+  resources :users, only: [:index, :create, :show, :update, :destroy]
 
   resources :events do
     resources :participants, only: [:index, :create]
@@ -16,10 +16,6 @@ Rails.application.routes.draw do
   resources :participants, only: [:destroy]
 
   namespace :admin do
-    # get "participants/index"
-    # get "participants/create"
-    # get "participants/update"
-    # get "participants/destroy"
     get '/dashboard', to: 'dashboard#index'
     resources :events, only: [:index, :show, :update, :destroy] do
       resources :participants, only: [:index]
